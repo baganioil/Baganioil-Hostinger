@@ -538,7 +538,7 @@
         sendBtn.disabled = true;
         var typing = addTyping();
 
-        fetch('/chat', {
+        fetch('https://baganioil-hostinger.onrender.com/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, sessionId: SESSION_ID, pageUrl: window.location.pathname })
