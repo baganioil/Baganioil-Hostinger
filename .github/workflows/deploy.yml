@@ -32,16 +32,13 @@ jobs:
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Hostinger via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.HOSTINGER_FTP_HOST }}
           username: ${{ secrets.HOSTINGER_FTP_USER }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./_site/
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
+          port: 22
+          local_path: './_site/*'
+          remote_path: 'public_html'
+          sftpArgs: '-o ConnectTimeout=10 -o StrictHostKeyChecking=no'
