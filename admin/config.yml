@@ -1,0 +1,173 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "src/images"
+public_folder: "/images"
+site_url: "/"
+logo_url: "/images/logo.svg"
+
+collections:
+  # ─── Products ───
+  - name: "products"
+    label: "Products"
+    folder: "src/_data/products"
+    create: true
+    format: "json"
+    slug: "{{slug}}"
+    identifier_field: "name"
+    summary: "{{name}} — {{line}} ({{spec}})"
+    fields:
+      - { label: "Slug (URL)", name: "slug", widget: "string", hint: "URL-friendly name, e.g. amihan-tempest-4t" }
+      - { label: "Product Name", name: "name", widget: "string" }
+      - { label: "Product Line", name: "line", widget: "select", options: ["Amihan", "Laon", "Aman", "Anitun"] }
+      - { label: "Category (filter)", name: "category", widget: "select", options: ["amihan", "laon", "aman", "anitun"] }
+      - { label: "Spec Summary", name: "spec", widget: "string", hint: "e.g. 20W-50 | JASO MA-2 | 1 Liter" }
+      - { label: "Short Description", name: "shortDesc", widget: "text" }
+      - { label: "Product Image", name: "image", widget: "image" }
+      - label: "Product Video"
+        name: "video"
+        widget: "file"
+        required: false
+        media_folder: "/src/videos"
+        public_folder: "/videos"
+        hint: "Upload MP4 file (keep under 50MB). Optional."
+      - { label: "Full Description", name: "description", widget: "text" }
+      - { label: "Secondary Description", name: "description2", widget: "text" }
+      - label: "Specifications"
+        name: "specs"
+        widget: "object"
+        fields:
+          - { label: "Product Name", name: "Product Name", widget: "string" }
+          - { label: "Brand", name: "Brand", widget: "string", default: "Bagani" }
+          - { label: "Oil Type", name: "Oil Type", widget: "string" }
+          - { label: "Viscosity Grade", name: "Viscosity Grade", widget: "string" }
+          - { label: "API Standard", name: "API Standard", widget: "string" }
+          - { label: "Engine Type", name: "Engine Type", widget: "string" }
+          - { label: "Volume", name: "Volume", widget: "string" }
+          - { label: "Origin", name: "Origin", widget: "string", default: "Made in the Philippines" }
+      - label: "Key Features"
+        name: "features"
+        widget: "list"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "desc", widget: "text" }
+          - { label: "Icon", name: "icon", widget: "image", default: "/images/icon-service-6.svg" }
+      - label: "Applications"
+        name: "applications"
+        widget: "list"
+        field: { label: "Application", name: "application", widget: "string" }
+      - label: "FAQs"
+        name: "faqs"
+        widget: "list"
+        fields:
+          - { label: "Question", name: "q", widget: "string" }
+          - { label: "Answer", name: "a", widget: "text" }
+
+  # ─── News / Articles ───
+  - name: "news"
+    label: "News & Articles"
+    folder: "src/news"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "news-single.njk" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Tags", name: "tags", widget: "list", default: ["news"] }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ─── FAQs ───
+  - name: "faqs"
+    label: "FAQs"
+    folder: "src/_data/faqs"
+    create: true
+    format: "json"
+    slug: "{{slug}}"
+    identifier_field: "question"
+    summary: "{{question}}"
+    fields:
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Answer", name: "answer", widget: "text" }
+      - { label: "Category", name: "category", widget: "select", options: ["general", "product", "dealer"], default: "general" }
+      - { label: "Order", name: "order", widget: "number", default: 10 }
+
+  # ─── Store Locations ───
+  - name: "stores"
+    label: "Store Locations"
+    folder: "src/_data/stores"
+    create: true
+    format: "json"
+    slug: "{{slug}}"
+    identifier_field: "name"
+    summary: "{{name}} — {{city}}"
+    fields:
+      - { label: "Store Name", name: "name", widget: "string" }
+      - { label: "Address", name: "address", widget: "string" }
+      - { label: "City", name: "city", widget: "string" }
+      - { label: "Phone", name: "phone", widget: "string", required: false }
+      - { label: "Latitude", name: "lat", widget: "number", value_type: "float" }
+      - { label: "Longitude", name: "lng", widget: "number", value_type: "float" }
+
+  # ─── Site Settings ───
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "General Settings"
+        name: "site"
+        file: "src/_data/site.json"
+        fields:
+          - { label: "Site Name", name: "name", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Keywords", name: "keywords", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Address", name: "address", widget: "string" }
+          - { label: "Copyright Year", name: "year", widget: "string" }
+          - { label: "Facebook Page ID (Messenger Chat)", name: "facebookPageId", widget: "string", required: false, hint: "Your Facebook Page numeric ID. Leave blank or set to YOUR_FACEBOOK_PAGE_ID to disable the chat bubble." }
+          - label: "Social Links"
+            name: "social"
+            widget: "object"
+            fields:
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }
+              - { label: "Instagram", name: "instagram", widget: "string", required: false }
+              - { label: "Twitter / X", name: "twitter", widget: "string", required: false }
+              - { label: "Pinterest", name: "pinterest", widget: "string", required: false }
+
+  # ─── Homepage ───
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - label: "Homepage Content"
+        name: "homepage"
+        file: "src/_data/homepage.json"
+        fields:
+          - label: "Hero Section"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Premium Motorcycle Oils" }
+              - { label: "Title", name: "title", widget: "string", default: "Fuel Your Ride with Bagani Power" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Button Text", name: "buttonText", widget: "string", default: "Explore Products" }
+              - { label: "Button URL", name: "buttonUrl", widget: "string", default: "/products/" }
+          - label: "About Section"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "about bagani" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Years of Experience", name: "years", widget: "number", default: 10 }
+              - { label: "Rating", name: "rating", widget: "string", default: "4.9" }
+              - { label: "Rating Count", name: "ratingCount", widget: "string", default: "15.5K" }
+          - label: "Testimonials"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "Quote", name: "quote", widget: "text" }
+              - { label: "Author", name: "author", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Author Image", name: "image", widget: "image" }
