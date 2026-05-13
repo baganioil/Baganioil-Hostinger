@@ -660,6 +660,27 @@
     var grid = document.querySelector('.project-item-boxes');
     if (!grid) return;
 
+    // Show skeleton cards while loading
+    var skeletonCard = '<div class="project-item-box">' +
+      '<div class="bagani-product-item bagani-skeleton-card">' +
+        '<div class="bagani-skeleton-img"></div>' +
+        '<div class="bagani-skeleton-body">' +
+          '<div class="bagani-skeleton-line" style="width:50%;height:12px;margin-bottom:10px;"></div>' +
+          '<div class="bagani-skeleton-line" style="width:80%;height:18px;margin-bottom:8px;"></div>' +
+          '<div class="bagani-skeleton-line" style="width:60%;height:12px;margin-bottom:6px;"></div>' +
+          '<div class="bagani-skeleton-line" style="width:90%;height:12px;margin-bottom:20px;"></div>' +
+          '<div class="bagani-skeleton-line" style="width:100%;height:36px;border-radius:4px;"></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+    grid.innerHTML = Array(6).fill(skeletonCard).join('');
+
+    // Show "taking longer than expected" after 5s (Render.com free tier cold start)
+    var slowTimer = setTimeout(function() {
+      var msg = document.getElementById('products-slow-msg');
+      if (msg) msg.style.display = 'block';
+    }, 5000);
+
     sanityFetch('*[_type == "product"] | order(line asc, name asc) { "slug": slug.current, name, line, category, spec, shortDesc, "image": image.asset->url, "viscosity": specs[key match "Viscosity*"][0].value, "engineType": specs[key match "Engine*"][0].value, "pdfUrl": pdfFile.asset->url }')
       .then(function (products) {
         if (!products || !products.length) return;
@@ -769,6 +790,16 @@
 
         // Apply current filter state (catches any boxes checked before products loaded)
         applyFilters();
+        clearTimeout(slowTimer);
+        var msg = document.getElementById('products-slow-msg');
+        if (msg) msg.style.display = 'none';
+      })
+      .catch(function() {
+        clearTimeout(slowTimer);
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:#aaa;">' +
+          '<p>Could not load products. Please refresh the page.</p>' +
+          '<button onclick="location.reload()" style="margin-top:12px;padding:8px 20px;background:#FFC107;color:#121212;border:none;border-radius:4px;cursor:pointer;font-weight:700;">Retry</button>' +
+        '</div>';
       });
   }
 

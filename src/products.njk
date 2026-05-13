@@ -142,7 +142,11 @@ pageHeaderBg: /images/our-products.jpg
             <div class="nike-shop-grid">
                 <!-- Adding an overlay to click-close sidebar on mobile -->
                 <div class="mobile-sidebar-overlay" id="mobile-overlay"></div>
-                
+
+                <p id="products-slow-msg" style="display:none;grid-column:1/-1;text-align:center;color:#aaa;font-size:14px;padding:0 0 12px;">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="margin-right:6px;"></i>Still loading — server is warming up, almost there…
+                </p>
+
                 <div class="project-item-boxes" id="sanity-products-grid">
                     <!-- Products loaded from Sanity -->
                 </div>
@@ -151,6 +155,30 @@ pageHeaderBg: /images/our-products.jpg
     </div>
 </div>
 <!-- Product Shop End -->
+
+<style>
+@keyframes bagani-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.bagani-skeleton-card { pointer-events: none; }
+.bagani-skeleton-img {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: bagani-shimmer 1.4s infinite;
+}
+.bagani-skeleton-body { padding: 16px; }
+.bagani-skeleton-line {
+  display: block;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: bagani-shimmer 1.4s infinite;
+}
+</style>
 
 <script>
 // Define immediately so sanity-live.js can call it as soon as products render
